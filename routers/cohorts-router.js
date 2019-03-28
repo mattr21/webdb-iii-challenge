@@ -31,8 +31,8 @@ router.post('/', async (req, res) => {
 // list all cohorts
 router.get('/', async (req, res) => {
     try {
-        const students = await db('cohorts');
-        res.status(200).json(students);
+        const cohorts = await db('cohorts');
+        res.status(200).json(cohorts);
     } catch (error) {
         res.status(500).json({ message: 'error getting cohorts' })
     }
@@ -52,6 +52,16 @@ router.get('/:id', async (req, res) => {
 });
 
 // list all students for the specified cohort
+router.get('/:id/students', async (req, res) => {
+    try {
+        const students = await db('students')
+            .where({ id: req.params.id });
+
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
 // update cohort
 router.put('/:id', async (req, res) => {
