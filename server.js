@@ -1,14 +1,12 @@
 const express = require('express');
 const server = express();
+const helmet = require('helmet');
+const cohortsRouter = require('./routers/cohorts-router.js');
+// const studentsRouter = require('./routers/students-router.js');
 
 server.use(express.json());
-
-server.get('/', async (req, res) => {
-    try {
-        res.send('test');
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
+server.use(helmet());
+server.use('/cohorts', cohortsRouter);
+// server.use('/students', studentsRouter);
 
 module.exports = server;
