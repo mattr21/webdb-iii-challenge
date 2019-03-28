@@ -38,6 +38,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+// list specific cohort by id
+router.get('/:id', async (req, res) => {
+    try {
+        const cohort = await db('cohorts')
+            .where({ id: req.params.id })
+            .first();
+
+        res.status(200).json(cohort)
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
 
 
 
