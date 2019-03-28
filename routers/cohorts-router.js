@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// list specific cohort by id
+// list specific cohort
 router.get('/:id', async (req, res) => {
     try {
         const cohort = await db('cohorts')
@@ -51,9 +51,46 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// list all students for the specified cohort
 
+// update cohort
+router.put('/:id', async (req, res) => {
+    try {
+        const count = await db('cohorts')
+            .where({ id: req.params.id })
+            .update(req.body);
 
+        if(count > 0) {
+            const cohort = await db('cohorts')
+                .where({ id: req.params.id })
+                .first();
 
+            res.status(200).json(cohort);
+        } else {
+            res.status(404).json({ message: 'Cohort not found.' })
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+// delete cohort
+router.delete('/:id', async (req, res) => {
+    try {
+        const count = await db('cohorts')
+            .where({ id: req.params.id })
+            .del();
+
+        if(count > 0) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Cohort not found' })
+        }
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
 
 module.exports = router;
 
