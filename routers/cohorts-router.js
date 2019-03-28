@@ -54,8 +54,12 @@ router.get('/:id', async (req, res) => {
 // list all students for the specified cohort
 router.get('/:id/students', async (req, res) => {
     try {
+        const cohort = await db('cohorts')
+        .where({ id: req.params.id })
+        .first();
+
         const students = await db('students')
-            .where({ id: req.params.id });
+            .where({ cohorts_id: req.params.id });
 
         res.status(200).json(students);
     } catch (error) {
